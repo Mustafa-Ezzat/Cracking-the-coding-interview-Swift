@@ -15,19 +15,55 @@
 
 import Foundation
 
-class Solution {
-    func isPalindrome(_ s: String) -> Bool {
-        if s.count == 0 {
-            return true
-        }
-        var withOutSpace = s.replacingOccurrences(of: " ", with: "")
-        withOutSpace = withOutSpace.lowercased()
-        let unsafeChars = CharacterSet.alphanumerics.inverted
-        let alphabets = withOutSpace.components(separatedBy: unsafeChars).joined(separator: "")
-        let reversed = String(alphabets.reversed())
-        return reversed == alphabets
+struct Palindrome<Element> {
+    var data = Array<Element>()
+    mutating func add(_ element: Element) {
+        data.append(element)
+    }
+    var end: Element? {
+        return data.last
+    }
+    var start: Element? {
+        return data.first
+    }
+    mutating func popLast() -> Element {
+        return data.removeLast()
+    }
+    mutating func popFirst() -> Element {
+        return data.removeFirst()
+    }
+    var atLeastTowChar: Bool {
+        return data.count > 1
     }
 }
 
-var solution = Solution()
-solution.isPalindrome("race a car")
+class Solution {
+    func validPalindrome(_ s: String) -> Bool {
+        var palindrome = Palindrome<Character>()
+        for char in s {
+            palindrome.add(char)
+        }
+        
+        var atMostOnce = false
+        
+        while palindrome.atLeastTowChar {
+            if palindrome.start == palindrome.end {
+                print(palindrome.start, " balanced ", palindrome.end)
+                palindrome.popLast()
+                palindrome.popFirst()
+            } else {
+                if atMostOnce {
+                    return false
+                }
+                print(palindrome.start, " not balanced ", palindrome.end)
+                palindrome.popLast()
+                palindrome.popFirst()
+                atMostOnce = true
+            }
+        }
+        return true
+    }
+}
+
+let solution = Solution()
+solution .validPalindrome("abcaa")
