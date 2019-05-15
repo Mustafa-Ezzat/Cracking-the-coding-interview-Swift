@@ -8,7 +8,7 @@ class Solution {
     func calculateNewBit(leftBit: Int, rightBit: Int = 0, carry: inout Int) -> String {
         let sum = leftBit + rightBit + carry
         carry = sum / 2
-        var newBit = sum % 2
+        let newBit = sum % 2
         return String(newBit)
     }
     
